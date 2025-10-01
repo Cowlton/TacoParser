@@ -42,7 +42,7 @@ namespace LoggingKata
 
             // TODO: Create a `double` variable to store the distance
 
-            double distance;
+            double distance = 0;
 
 
             // TODO: Add the Geolocation library to enable location comparisons: using GeoCoordinatePortable;
@@ -54,6 +54,29 @@ namespace LoggingKata
             // TODO: Create a loop to go through each item in your collection of locations.
             // This loop will let you select one location at a time to act as the "starting point" or "origin" location.
             // Naming suggestion for variable: `locA`
+
+            for (int i = 0; i < locations.Length; i++)
+            {
+                var locA = locations[i];
+                var corA = new GeoCoordinate(locA.Location.Latitude, locA.Location.Longitude);
+
+                for (int j = 0; j < locations.Length; j++)
+                {
+                    var locB = locations[j];
+                    var corB = new GeoCoordinate(locB.Location.Latitude, locB.Location.Longitude);
+                    
+                    double dis = corA.GetDistanceTo(corB); // Distance in meters
+
+                    if (dis > distance)
+                    {
+                        distance = dis;
+                        FarBell = locA;
+                        CloseBell = locB;
+                    }
+                }
+
+            }
+            
 
             // TODO: Once you have locA, create a new Coordinate object called `corA` with your locA's latitude and longitude.
 
@@ -71,6 +94,16 @@ namespace LoggingKata
 
             // Once you've looped through everything, you've found the two Taco Bells farthest away from each other.
             // Display these two Taco Bell locations to the console.
+
+            double rDistMe = Math.Round(distance,3);// rounded Distance in Meters
+            double rDistF = Math.Round(distance * 3.28084,3);// rounded Distance in Feet
+            double rDistMi = Math.Round(distance / 1609.344,3);// rounded Distance in Miles
+            
+            Console.WriteLine($"The two farthest apart Tacobells are {FarBell.Name} and {CloseBell.Name}");
+            Console.WriteLine();
+            Console.WriteLine($"They are {rDistMi} Miles apart");
+            Console.WriteLine($"or {rDistF} Feet apart");
+            Console.WriteLine($"or {rDistMe} Meters apart");
 
 
 
